@@ -34,8 +34,7 @@ public class Turnover implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "turnover", cascade = CascadeType.ALL)
     private Steal steal;
-
-
+    
     public Turnover(IncidentTime incidentTime, TurnoverEnum type, Game game, Player player) {
         this.incidentTime = incidentTime;
         this.type = type;

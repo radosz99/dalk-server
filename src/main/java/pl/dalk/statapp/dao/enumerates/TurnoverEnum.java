@@ -4,5 +4,5 @@ public enum TurnoverEnum {
     OUT_OF_BOUNDS,
     HANDLING,
     BAD_PASS,
-    OFENSIVE_FAUL
+    OFFENSIVE_FOUL
 }
