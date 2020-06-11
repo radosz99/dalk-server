@@ -22,10 +22,10 @@ public class League implements Serializable {
 
     private String name;
 
-    @OneToMany(mappedBy = "league" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "league", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Game> gameList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "league" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "league", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 

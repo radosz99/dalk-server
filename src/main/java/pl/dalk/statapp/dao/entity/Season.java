@@ -20,10 +20,10 @@ public class Season implements Serializable {
     private long id;
     private String name;
 
-    @OneToMany(mappedBy = "season" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "season", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Game> gameList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "season" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "season", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 

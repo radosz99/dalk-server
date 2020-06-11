@@ -23,23 +23,20 @@ public class Team implements Serializable {
     @NotNull
     private String name;
 
-//    @OneToMany(mappedBy = "homeTeam" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Game> gameAsHomeList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "awayTeam" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Game> gameAsAwayList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "team" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<TeamRebound> teamReboundList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "team" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Timeout> timeoutList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "team" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<PlayerInfo> playerInfoList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "team" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<TeamInfo> teamInfoList = new ArrayList<>();
+    @OneToMany(mappedBy = "homeTeam", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Game> gameAsHomeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "awayTeam", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Game> gameAsAwayList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeamRebound> teamReboundList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Timeout> timeoutList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 
     public Team(@NotNull String name) {

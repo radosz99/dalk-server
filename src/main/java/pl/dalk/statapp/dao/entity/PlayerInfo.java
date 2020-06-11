@@ -26,8 +26,8 @@ public class PlayerInfo implements Serializable {
     private TeamInfo teamInfo;
 
 
-    public PlayerInfo(Player player) {
+    public PlayerInfo(Player player, TeamInfo teamInfo) {
         this.player = player;
-        //this.teamInfo = teamInfo;
+        this.teamInfo = teamInfo;
     }
 }

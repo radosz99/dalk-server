@@ -39,27 +39,27 @@ public class Game implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "league_id", referencedColumnName = "id")
     private League league;
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Shot> shotList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Foul> foulList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Turnover> turnoverList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Rebound> reboundList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<TeamRebound> teamReboundList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Substitution> substitutionList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "game" , orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Timeout> timeoutList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Shot> shotList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Foul> foulList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Turnover> turnoverList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rebound> reboundList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeamRebound> teamReboundList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Substitution> substitutionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Timeout> timeoutList = new ArrayList<>();
 
     private Date date;
 

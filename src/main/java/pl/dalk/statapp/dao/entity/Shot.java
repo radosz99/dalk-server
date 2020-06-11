@@ -21,11 +21,11 @@ public class Shot implements Serializable {
 
     private boolean hit;
 
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "shot", orphanRemoval = true, cascade = CascadeType.ALL)
-//    private Assist assist;
-//
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "shot", orphanRemoval = true, cascade = CascadeType.ALL)
-//    private Block block;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "shot", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Assist assist;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "shot", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Block block;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="incident_time_id", referencedColumnName = "id")

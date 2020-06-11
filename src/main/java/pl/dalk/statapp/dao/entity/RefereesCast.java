@@ -27,8 +27,8 @@ public class RefereesCast implements Serializable {
     @JoinColumn(name = "second_referee_id", referencedColumnName = "id")
     private Referee secondReferee;
 
-//    @OneToMany(mappedBy = "refereesCast", fetch = FetchType.LAZY)
-//    private List<Game> gameList = new ArrayList<>();
+    @OneToMany(mappedBy = "refereesCast", fetch = FetchType.LAZY)
+    private List<Game> gameList = new ArrayList<>();
 
     public RefereesCast(Referee mainReferee, Referee secondReferee) {
         this.mainReferee = mainReferee;
