@@ -1,16 +1,19 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter
+@Getter @ToString
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "foul")
 public class Foul implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +21,8 @@ public class Foul implements Serializable {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="fouled_player")
-    private Player fouledPlayer;
+    @JoinColumn(name="fouled_player_info")
+    private PlayerInfo fouledPlayerInfo;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="incident_time_id", referencedColumnName = "id")
@@ -30,14 +33,14 @@ public class Foul implements Serializable {
     private Game game;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="fouling_player", referencedColumnName = "id")
-    private Player foulingPlayer;
+    @JoinColumn(name="fouling_player_info", referencedColumnName = "id")
+    private PlayerInfo foulingPlayerInfo;
 
 
-    public Foul(Player fouledPlayer, Player foulingPlayer, IncidentTime incidentTime, Game game) {
-        this.fouledPlayer = fouledPlayer;
+    public Foul(PlayerInfo fouledPlayerInfo, PlayerInfo foulingPlayerInfo, IncidentTime incidentTime, Game game) {
+        this.fouledPlayerInfo = fouledPlayerInfo;
         this.incidentTime = incidentTime;
-        this.foulingPlayer = foulingPlayer;
+        this.foulingPlayerInfo = foulingPlayerInfo;
         this.game = game;
     }
 }

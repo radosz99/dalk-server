@@ -1,16 +1,19 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Setter
-@Getter
+@Getter @ToString
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="steal")
 public class Steal implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +25,11 @@ public class Steal implements Serializable {
     private Turnover turnover;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="player_id", referencedColumnName = "id")
-    private Player player;
+    @JoinColumn(name="player_info_id", referencedColumnName = "id")
+    private PlayerInfo playerInfo;
 
-    public Steal(Turnover turnover, Player player) {
+    public Steal(Turnover turnover, PlayerInfo playerInfo) {
         this.turnover = turnover;
-        this.player = player;
+        this.playerInfo = playerInfo;
     }
 }

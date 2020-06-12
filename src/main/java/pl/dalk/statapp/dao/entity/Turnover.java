@@ -1,8 +1,10 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import pl.dalk.statapp.dao.enumerates.TurnoverEnum;
 
 import javax.persistence.*;
@@ -10,8 +12,9 @@ import java.io.Serializable;
 
 @Entity
 @Setter
-@Getter
+@Getter @ToString
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="turnover")
 public class Turnover implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,16 +32,16 @@ public class Turnover implements Serializable {
     private Game game;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="player", referencedColumnName = "id")
-    private Player player;
+    @JoinColumn(name="player_info_id", referencedColumnName = "id")
+    private PlayerInfo playerInfo;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "turnover", cascade = CascadeType.ALL)
     private Steal steal;
     
-    public Turnover(IncidentTime incidentTime, TurnoverEnum type, Game game, Player player) {
+    public Turnover(IncidentTime incidentTime, TurnoverEnum type, Game game, PlayerInfo playerInfo) {
         this.incidentTime = incidentTime;
         this.type = type;
         this.game = game;
-        this.player = player;
+        this.playerInfo = playerInfo;
     }
 }

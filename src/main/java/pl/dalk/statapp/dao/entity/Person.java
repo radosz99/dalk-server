@@ -1,18 +1,20 @@
 package pl.dalk.statapp.dao.entity;
 
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
-@Getter
+@Getter @ToString
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="person")
 public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

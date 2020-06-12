@@ -1,8 +1,11 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,51 +17,59 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "game")
 public class Game implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "home_team_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "home_team_id")
     private Team homeTeam;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "away_team_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "away_team_id")
     private Team awayTeam;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "referees_cast_id", referencedColumnName = "id")
+    @JoinColumn(name = "referees_cast_id")
     private RefereesCast refereesCast;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "season_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "season_id")
     private Season season;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "league_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "league_id")
     private League league;
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Shot> shotList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Foul> foulList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Turnover> turnoverList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Rebound> reboundList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<TeamRebound> teamReboundList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Substitution> substitutionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Timeout> timeoutList = new ArrayList<>();
 
     private Date date;

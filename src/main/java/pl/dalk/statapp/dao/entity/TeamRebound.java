@@ -1,17 +1,20 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import pl.dalk.statapp.dao.enumerates.ReboundEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter
+@Getter @ToString
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="team_rebound")
 public class TeamRebound implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

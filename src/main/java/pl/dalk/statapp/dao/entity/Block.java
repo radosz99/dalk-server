@@ -1,16 +1,19 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter
+@Getter @ToString
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="block")
 public class Block implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +25,11 @@ public class Block implements Serializable {
     private Shot shot;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="player_id", referencedColumnName = "id")
-    private Player player;
+    @JoinColumn(name="player_info_id", referencedColumnName = "id")
+    private PlayerInfo playerInfo;
 
-    public Block(Shot shot, Player player) {
+    public Block(Shot shot, PlayerInfo playerInfo) {
         this.shot = shot;
-        this.player = player;
+        this.playerInfo = playerInfo;
     }
 }

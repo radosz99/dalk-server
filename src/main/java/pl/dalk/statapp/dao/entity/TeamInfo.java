@@ -1,17 +1,21 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @ToString
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="team_info")
 public class TeamInfo {
     @Id
@@ -27,6 +31,7 @@ public class TeamInfo {
     private League league;
 
     @OneToMany(mappedBy = "teamInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<PlayerInfo> playerInfoList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
