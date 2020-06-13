@@ -1,7 +1,9 @@
 package pl.dalk.statapp.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,7 +29,7 @@ public class Season implements Serializable {
     private List<Game> gameList = new ArrayList<>();
 
     @OneToMany(mappedBy = "season", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference
     private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 
