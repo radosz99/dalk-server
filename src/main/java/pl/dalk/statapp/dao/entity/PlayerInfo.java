@@ -37,7 +37,7 @@ public class PlayerInfo implements Serializable {
     @JsonIgnore
     private List<Assist> assistList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playerInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "playerInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Shot> shotList = new ArrayList<>();
 
@@ -69,7 +69,9 @@ public class PlayerInfo implements Serializable {
     @JsonIgnore
     private List<Substitution> substitutionOutList = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "playerInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PlayerInGame> playerInGameList = new ArrayList<>();
 
     public PlayerInfo(Player player, TeamInfo teamInfo, int jerseyNo) {
         this.player = player;

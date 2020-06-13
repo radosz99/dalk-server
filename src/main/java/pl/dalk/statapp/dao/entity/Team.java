@@ -23,13 +23,9 @@ public class Team implements Serializable {
 
     private String name;
 
-    @OneToMany(mappedBy = "homeTeam", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Game> gameAsHomeList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "awayTeam", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Game> gameAsAwayList = new ArrayList<>();
+    private List<MatchSquad> gamesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

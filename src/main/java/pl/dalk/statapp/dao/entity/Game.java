@@ -24,13 +24,13 @@ public class Game implements Serializable {
     @Id
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "home_team_id")
-    private Team homeTeam;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "home_match_squad")
+    private MatchSquad homeMatchSquad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "away_team_id")
-    private Team awayTeam;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "away_match_squad")
+    private MatchSquad awayMatchSquad;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "referees_cast_id")
@@ -74,9 +74,9 @@ public class Game implements Serializable {
 
     private Date date;
 
-    public Game(Team homeTeam, Team awayTeam, RefereesCast refereesCast, Season season, League league, Date date) {
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+    public Game(MatchSquad homeMatchSquad, MatchSquad awayMatchSquad, RefereesCast refereesCast, Season season, League league, Date date) {
+        this.homeMatchSquad = homeMatchSquad;
+        this.awayMatchSquad = awayMatchSquad;
         this.refereesCast = refereesCast;
         this.season = season;
         this.league = league;

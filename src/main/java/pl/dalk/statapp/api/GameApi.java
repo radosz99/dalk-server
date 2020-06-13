@@ -21,14 +21,16 @@ public class GameApi {
     private TeamManager teamManager;
     private SeasonManager seasonManager;
     private LeagueManager leagueManager;
+    private MatchSquadManager matchSquadManager;
 
     @Autowired
-    public GameApi(GameManager gameManager, RefereesCastManager refereesCastManager, TeamManager teamManager, SeasonManager seasonManager, LeagueManager leagueManager) {
+    public GameApi(GameManager gameManager, RefereesCastManager refereesCastManager, TeamManager teamManager, SeasonManager seasonManager, LeagueManager leagueManager, MatchSquadManager matchSquadManager) {
         this.gameManager = gameManager;
         this.refereesCastManager = refereesCastManager;
         this.teamManager = teamManager;
         this.seasonManager = seasonManager;
         this.leagueManager = leagueManager;
+        this.matchSquadManager = matchSquadManager;
     }
 
     @GetMapping()
@@ -53,8 +55,8 @@ public class GameApi {
         Optional<Game> game = gameManager.findById(index);
         Map<String, Integer> score = new HashMap<>();
         if(game.isPresent()) {
-            Team homeTeam = game.get().getHomeTeam();
-            Team awayTeam = game.get().getAwayTeam();
+            Team homeTeam = game.get().getHomeMatchSquad().getTeam();
+            Team awayTeam = game.get().getAwayMatchSquad().getTeam();
             int scoreHome = 0, scoreAway = 0;
             for(Shot shot : game.get().getShotList()){
                 if(shot.isHit()) {
@@ -114,7 +116,9 @@ public class GameApi {
                     HttpStatus.NOT_FOUND, "That league doesn't exist!"
             );
         }
-        Game newGame = new Game(homeTeam.get(), awayTeam.get(), refereesCast.get(), season.get(), league.get(), game.getDate());
+        MatchSquad homeSquad = new MatchSquad(homeTeam.get());
+        MatchSquad awaySquad = new MatchSquad(awayTeam.get());
+        Game newGame = new Game(homeSquad, awaySquad, refereesCast.get(), season.get(), league.get(), game.getDate());
         Game addedGame = gameManager.save(newGame);
         return addedGame;
     }
