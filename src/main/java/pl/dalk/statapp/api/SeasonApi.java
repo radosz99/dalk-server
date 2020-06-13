@@ -3,12 +3,10 @@ package pl.dalk.statapp.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.dalk.statapp.dao.entity.Season;
 import pl.dalk.statapp.manager.SeasonManager;
-
 import java.util.List;
 import java.util.Optional;
 

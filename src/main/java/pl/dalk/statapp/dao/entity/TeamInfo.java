@@ -32,10 +32,10 @@ public class TeamInfo {
 
     @OneToMany(mappedBy = "teamInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<PlayerInfo> playerInfoList = new ArrayList<>();
+    private List<PlayerSeasonInfo> playerInfoList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="season", referencedColumnName = "id")
+    @JoinColumn(name="season_id", referencedColumnName = "id")
     private Season season;
 
     public TeamInfo(Team team, League league, Season season) {

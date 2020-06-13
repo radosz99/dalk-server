@@ -38,42 +38,14 @@ public class GameApi {
         return gameManager.findAll();
     }
 
-    @GetMapping("/{index}/shot")
-    public List<Shot>getShotsInGame(@PathVariable Long index){
-        Optional<Game> game = gameManager.findById(index);
-        if(game.isPresent()) {
-            return game.get().getShotList();
-        }
-        else{
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That game doesn't exist!");
-        }
-    }
-
     @GetMapping("/{index}/score")
     public Map<String, Integer> getScore(@PathVariable Long index){
         Optional<Game> game = gameManager.findById(index);
         Map<String, Integer> score = new HashMap<>();
         if(game.isPresent()) {
-            Team homeTeam = game.get().getHomeMatchSquad().getTeam();
-            Team awayTeam = game.get().getAwayMatchSquad().getTeam();
-            int scoreHome = 0, scoreAway = 0;
-            for(Shot shot : game.get().getShotList()){
-                if(shot.isHit()) {
-                    if(shot.getPlayerInfo().getTeamInfo().getSeason().equals(game.get().getSeason())){
-                        if(shot.getPlayerInfo().getTeamInfo().getTeam().equals(homeTeam)){
-                            scoreHome += shot.getType();
-                        }
-                        else {
-                            scoreAway += shot.getType();
-                        }
-                    }
-                }
-            }
-            score.put("home", scoreHome);
-            score.put("away", scoreAway);
+            score.put("home", game.get().getHomeTeamDetail().getTeamStatisticLine().getPoints());
+            score.put("away", game.get().getAwayTeamDetail().getTeamStatisticLine().getPoints());
             return score;
-
         }
         else{
             throw new ResponseStatusException(
@@ -82,10 +54,8 @@ public class GameApi {
 
     }
 
-
     @PostMapping()
     public Game addGame(@RequestBody GameSimple game){
-        System.out.println("gIERka " + game);
         Optional<Team> homeTeam = teamManager.findById(game.getHome_team_id());
         Optional<Team> awayTeam = teamManager.findById(game.getAway_team_id());
         Optional<RefereesCast> refereesCast = refereesCastManager.findById(game.getReferees_cast_id());
@@ -116,8 +86,8 @@ public class GameApi {
                     HttpStatus.NOT_FOUND, "That league doesn't exist!"
             );
         }
-        MatchSquad homeSquad = new MatchSquad(homeTeam.get());
-        MatchSquad awaySquad = new MatchSquad(awayTeam.get());
+        TeamDetail homeSquad = new TeamDetail(homeTeam.get());
+        TeamDetail awaySquad = new TeamDetail(awayTeam.get());
         Game newGame = new Game(homeSquad, awaySquad, refereesCast.get(), season.get(), league.get(), game.getDate());
         Game addedGame = gameManager.save(newGame);
         return addedGame;

@@ -31,6 +31,7 @@ public class League implements Serializable {
     private List<Game> gameList = new ArrayList<>();
 
     @OneToMany(mappedBy = "league", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 

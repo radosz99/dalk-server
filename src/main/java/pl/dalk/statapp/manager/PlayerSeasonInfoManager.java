@@ -2,30 +2,30 @@ package pl.dalk.statapp.manager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.dalk.statapp.dao.PlayerInfoRepo;
-import pl.dalk.statapp.dao.entity.PlayerInfo;
+import pl.dalk.statapp.dao.PlayerSeasonInfoRepo;
+import pl.dalk.statapp.dao.entity.PlayerSeasonInfo;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PlayerInfoManager {
-    private PlayerInfoRepo playerInfoRepo;
+public class PlayerSeasonInfoManager {
+    private PlayerSeasonInfoRepo playerInfoRepo;
 
     @Autowired
-    public PlayerInfoManager(PlayerInfoRepo playerInfoRepo) {
+    public PlayerSeasonInfoManager(PlayerSeasonInfoRepo playerInfoRepo) {
             this.playerInfoRepo = playerInfoRepo;
             }
 
-    public PlayerInfo save(PlayerInfo league){
+    public PlayerSeasonInfo save(PlayerSeasonInfo league){
             return playerInfoRepo.save(league);
             }
 
-    public List<PlayerInfo> findAll(){
+    public List<PlayerSeasonInfo> findAll(){
             return playerInfoRepo.findAll();
             }
 
-    public Optional<PlayerInfo> findById(Long id){
+    public Optional<PlayerSeasonInfo> findById(Long id){
             return playerInfoRepo.findById(id);
             }
 }

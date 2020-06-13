@@ -2,8 +2,8 @@ package pl.dalk.statapp.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.dalk.statapp.dao.entity.Block;
+import pl.dalk.statapp.dao.entity.PlayerStatisticLine;
 
 @Repository
-public interface BlockRepo extends JpaRepository<Block, Long> {
+public interface PlayerStatisticLineRepo extends JpaRepository<PlayerStatisticLine, Long> {
 }

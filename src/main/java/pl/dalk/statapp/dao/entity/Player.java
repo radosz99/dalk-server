@@ -33,7 +33,7 @@ public class Player implements Serializable {
 
     @OneToMany(mappedBy = "player", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<PlayerInfo> playerInfoList = new ArrayList<>();
+    private List<PlayerSeasonInfo> playerInfoList = new ArrayList<>();
 
     public Player(@NotNull String dalkId,Person person) {
         this.dalkId = dalkId;

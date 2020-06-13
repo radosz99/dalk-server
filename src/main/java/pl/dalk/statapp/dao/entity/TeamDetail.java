@@ -1,6 +1,7 @@
 package pl.dalk.statapp.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="match_squad")
-public class MatchSquad {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name="team_detail")
+public class TeamDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
@@ -22,20 +24,23 @@ public class MatchSquad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
-
-    public MatchSquad(Team team) {
+    public TeamDetail(Team team) {
         this.team = team;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "homeMatchSquad", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "homeTeamDetail", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private Game gameAsHome;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "awayMatchSquad", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "awayTeamDetail", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private Game gameAsAway;
 
-    @OneToMany(mappedBy = "matchSquad", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "teamDetail", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PlayerInGame> playerInGameList = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private TeamStatisticLine teamStatisticLine;
 }
