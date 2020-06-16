@@ -24,7 +24,7 @@ public class TeamInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="team_id", referencedColumnName = "id")
     private Team team;
 
@@ -36,7 +36,7 @@ public class TeamInfo {
     @JsonIgnore
     private List<PlayerSeasonInfo> playerInfoList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="season_id", referencedColumnName = "id")
     @JsonBackReference
     private Season season;

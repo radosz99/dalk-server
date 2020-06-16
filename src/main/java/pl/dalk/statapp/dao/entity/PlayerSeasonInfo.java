@@ -23,18 +23,16 @@ public class PlayerSeasonInfo implements Serializable {
     @Id
     private long id;
 
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_id", referencedColumnName = "id")
     private Player player;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_info_id", referencedColumnName = "id")
     private TeamInfo teamInfo;
 
 
-    @OneToMany(mappedBy = "playerSeasonInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "playerSeasonInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<PlayerInGame> playerInGameList = new ArrayList<>();
 

@@ -21,7 +21,7 @@ public class TeamDetail {
     @Id
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
     private Team team;
     public TeamDetail(Team team) {

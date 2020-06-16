@@ -27,7 +27,7 @@ public class Player implements Serializable {
     @NotNull
     private String dalkId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="person_id", referencedColumnName = "id")
     private Person person;
 

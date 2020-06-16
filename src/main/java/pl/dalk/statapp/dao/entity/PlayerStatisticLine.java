@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
+import pl.dalk.statapp.statistic.Calculator;
 
 import javax.persistence.*;
 
@@ -40,6 +42,23 @@ public class PlayerStatisticLine {
     private int fouls;
     private int foulsOn;
     private int plusMinus;
+
+    public JSONObject getJSON(){
+        return new JSONObject()
+                .put("points", points)
+                .put("twoPoints", Calculator.getShotInfo(twoPointShotsMade, twoPointShots,1))
+                .put("threePoints", Calculator.getShotInfo(threePointShotsMade, threePointShots,1))
+                .put("freeThrows", Calculator.getShotInfo(freeThrowsMade, freeThrows,1))
+                .put("rebounds", Calculator.getReboundInfo(defensiveRebound, offensiveRebound,1))
+                .put("time", minutesPlayed + ":" + secondsPlayed)
+                .put("assists", assists)
+                .put("steals", steals)
+                .put("turnovers", turnovers)
+                .put("foulsOn", foulsOn)
+                .put("fouls", fouls)
+                .put("plusMinus", plusMinus)
+                .put("blocks", blocks);
+    }
 
 
     public PlayerStatisticLine(int minutesPlayed, int secondsPlayed, int twoPointShotsMade, int twoPointShots,

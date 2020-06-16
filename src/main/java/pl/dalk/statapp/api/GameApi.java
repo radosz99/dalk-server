@@ -1,5 +1,6 @@
 package pl.dalk.statapp.api;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -8,10 +9,7 @@ import pl.dalk.statapp.dao.entity.*;
 import pl.dalk.statapp.dao.simple_entity.GameSimple;
 import pl.dalk.statapp.manager.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/game")
@@ -38,9 +36,9 @@ public class GameApi {
         return gameManager.findAll();
     }
 
-    @GetMapping("/{index}/score")
-    public Map<String, Integer> getScore(@PathVariable Long index){
-        Optional<Game> game = gameManager.findById(index);
+    @GetMapping("/{gameId}/score")
+    public Map<String, Integer> getScore(@PathVariable Long gameId){
+        Optional<Game> game = gameManager.findById(gameId);
         Map<String, Integer> score = new HashMap<>();
         if(game.isPresent()) {
             score.put("home", game.get().getHomeTeamDetail().getTeamStatisticLine().getPoints());
@@ -51,7 +49,61 @@ public class GameApi {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "That game doesn't exist!");
         }
+    }
 
+    @GetMapping(value = "/{gameId}/boxscore", produces = "application/json")
+    public String getBoxScore(@PathVariable Long gameId){
+        Optional<Game> game = gameManager.findById(gameId);
+        JSONObject allStatistics = new JSONObject();
+        if(game.isPresent()) {
+
+            JSONObject homeTeamInfo = new JSONObject();
+            TeamDetail teamDetail = game.get().getHomeTeamDetail();
+            homeTeamInfo.put("name", teamDetail.getTeam().getName());
+            homeTeamInfo.put("statistics", teamDetail.getTeamStatisticLine().getJSON());
+            List<PlayerInGame> playerInGameList = teamDetail.getPlayerInGameList();
+            List<JSONObject> playerStatisticLineList = new ArrayList<>();
+            for(PlayerInGame playerInGame : playerInGameList){
+                JSONObject player = new JSONObject();
+                player.put("name", playerInGame.getPlayerSeasonInfo().getPlayer().getPerson().getName());
+                player.put("surname", playerInGame.getPlayerSeasonInfo().getPlayer().getPerson().getSurname());
+                player.put("jersey", playerInGame.getJerseyNo());
+                player.put("statistics", playerInGame.getPlayerStatisticLine().getJSON());
+                playerStatisticLineList.add(player);
+            }
+            homeTeamInfo.put("players", playerStatisticLineList);
+
+            JSONObject awayTeamInfo = new JSONObject();
+            awayTeamInfo.put("name", game.get().getAwayTeamDetail().getTeam().getName());
+            awayTeamInfo.put("statistics", game.get().getAwayTeamDetail().getTeamStatisticLine().getJSON());
+            playerInGameList = game.get().getAwayTeamDetail().getPlayerInGameList();
+            playerStatisticLineList = new ArrayList<>();
+            for(PlayerInGame playerInGame : playerInGameList){
+                JSONObject player = new JSONObject();
+                player.put("name", playerInGame.getPlayerSeasonInfo().getPlayer().getPerson().getName());
+                player.put("surname", playerInGame.getPlayerSeasonInfo().getPlayer().getPerson().getSurname());
+                player.put("jersey", playerInGame.getJerseyNo());
+                player.put("statistics", playerInGame.getPlayerStatisticLine().getJSON());
+                playerStatisticLineList.add(player);
+            }
+            awayTeamInfo.put("players", playerStatisticLineList);
+
+            allStatistics.put("home", homeTeamInfo);
+            allStatistics.put("away", awayTeamInfo);
+
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "That game doesn't exist!");
+        }
+
+        String response = new JSONObject()
+                .put("status", "200")
+                .put("result", allStatistics)
+                .toString();
+
+
+        return response;
     }
 
     @PostMapping()
@@ -93,11 +145,11 @@ public class GameApi {
         return addedGame;
     }
 
-    @GetMapping("/{index}")
-    public Optional<Game> getById(@PathVariable Long index){
-        Optional<Game> game = gameManager.findById(index);
+    @GetMapping("/{gameId}")
+    public Optional<Game> getById(@PathVariable Long gameId){
+        Optional<Game> game = gameManager.findById(gameId);
         if(game.isPresent()) {
-            return gameManager.findById(index);
+            return gameManager.findById(gameId);
         }
         else{
             throw new ResponseStatusException(

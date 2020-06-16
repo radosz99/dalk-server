@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
+import pl.dalk.statapp.statistic.Calculator;
 
 import javax.persistence.*;
 
@@ -34,6 +36,21 @@ public class TeamStatisticLine {
     private int blocks;
     private int fouls;
     private int foulsOn;
+
+    public JSONObject getJSON(){
+        return new JSONObject()
+                .put("points", points)
+                .put("twoPoints", Calculator.getShotInfo(twoPointShotsMade, twoPointShots,1))
+                .put("threePoints", Calculator.getShotInfo(threePointShotsMade, threePointShots,1))
+                .put("freeThrows", Calculator.getShotInfo(freeThrowsMade, freeThrows,1))
+                .put("rebounds", Calculator.getReboundInfo(defensiveRebound, offensiveRebound,1))
+                .put("assists", assists)
+                .put("steals", steals)
+                .put("turnovers", turnovers)
+                .put("foulsOn", foulsOn)
+                .put("fouls", fouls)
+                .put("blocks", blocks);
+    }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "teamStatisticLine", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore

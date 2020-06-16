@@ -1,6 +1,7 @@
 package pl.dalk.statapp.api;
 
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import pl.dalk.statapp.dao.entity.PlayerSeasonInfo;
 import pl.dalk.statapp.dao.entity.Season;
 import pl.dalk.statapp.manager.PlayerSeasonInfoManager;
 import pl.dalk.statapp.manager.SeasonManager;
+import pl.dalk.statapp.statistic.Calculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,17 +43,65 @@ public class SeasonApi {
     }
 
 
-    @GetMapping("/{index}")
-    public Optional<Season> getById(@PathVariable Long index){
-        Optional<Season> season = seasonManager.findById(index);
+    @GetMapping("/{seasonId}")
+    public Optional<Season> getById(@PathVariable Long seasonId){
+        Optional<Season> season = seasonManager.findById(seasonId);
         if(season.isPresent()) {
-            return seasonManager.findById(index);
+            return seasonManager.findById(seasonId);
         }
         else{
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Season not found"
             );
         }
+    }
+
+
+    @GetMapping(value = "/{seasonId}/statistics/{leagueId}", produces = "application/json")
+    //returns all players with game elements in the season from given league
+    public String getStatistics(@PathVariable long leagueId, @PathVariable long seasonId,
+                                @RequestParam(name = "avg", required = false) boolean avg,
+                                @RequestParam(name = "points", required = false) boolean points,
+                                @RequestParam(name = "assists", required = false) boolean assists,
+                                @RequestParam(name = "two_points", required = false) boolean twoPoints,
+                                @RequestParam(name = "three_points", required = false) boolean threePoints,
+                                @RequestParam(name = "blocks", required = false) boolean blocks,
+                                @RequestParam(name = "steals", required = false) boolean steals,
+                                @RequestParam(name = "turnovers", required = false) boolean turnovers,
+                                @RequestParam(name = "rebounds", required = false) boolean rebounds,
+                                @RequestParam(name = "free_throws", required = false) boolean freeThrows
+    ){
+
+        long start = System.nanoTime();
+        JSONObject allStatistics = new JSONObject();
+        List<PlayerSeasonInfo> playerInfoList = playerSeasonInfoManager.findAll();
+
+        boolean average = false;
+        Optional<Boolean> optAvg = Optional.ofNullable(avg);
+        if(optAvg.isPresent() && optAvg.get()){
+            average = true;
+        }
+
+
+        int playersCounter = 0;
+        for(PlayerSeasonInfo playerSeasonInfo : playerInfoList) {
+            if(playerSeasonInfo.getTeamInfo().getSeason().getId()!=seasonId || playerSeasonInfo.getTeamInfo().getLeague().getId()!=leagueId){
+                continue;
+            }
+
+            playersCounter++;
+            JSONObject statistics;
+            statistics = Calculator.makeStatistics(points,assists,blocks,steals,turnovers,freeThrows,rebounds,twoPoints,threePoints,playerSeasonInfo,average);
+            allStatistics.put(String.valueOf(playerSeasonInfo.getPlayer().getId()), statistics);
+        }
+
+        String response = new JSONObject()
+                .put("players_amount", playersCounter)
+                .put("status", "200")
+                .put("result", allStatistics)
+                .toString();
+
+        return response;
     }
 
 }

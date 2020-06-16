@@ -21,7 +21,7 @@ public class PlayerInGame {
 
     private int jerseyNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_season_info_id")
     private PlayerSeasonInfo playerSeasonInfo;
 
@@ -29,7 +29,7 @@ public class PlayerInGame {
     @JoinColumn(name = "team_detail_id")
     private TeamDetail teamDetail;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "playerInGame", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "playerInGame", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private PlayerStatisticLine playerStatisticLine;
 
