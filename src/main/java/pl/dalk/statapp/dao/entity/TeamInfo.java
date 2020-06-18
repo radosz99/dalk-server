@@ -24,26 +24,38 @@ public class TeamInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private int points;
+    private int matchesPlayed;
+    private int matchesWon;
+    private int matchesLost;
+    private int littlePointsScored;
+    private int littlePointsLost;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="team_id", referencedColumnName = "id")
     private Team team;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="league_id", referencedColumnName = "id")
-    private League league;
 
     @OneToMany(mappedBy = "teamInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PlayerSeasonInfo> playerInfoList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="season_id", referencedColumnName = "id")
-    @JsonBackReference
-    private Season season;
+    @OneToMany(mappedBy = "teamInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<TeamDetail> gamesList = new ArrayList<>();
 
-    public TeamInfo(Team team, League league, Season season) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="league_group_id", referencedColumnName = "id")
+    @JsonBackReference
+    private LeagueGroup leagueGroup;
+
+    public TeamInfo(int points, int matchesPlayed, int matchesWon, int matchesLost, int littlePointsScored, int littlePointsLost, Team team, LeagueGroup leagueGroup) {
+        this.points = points;
+        this.matchesPlayed = matchesPlayed;
+        this.matchesWon = matchesWon;
+        this.matchesLost = matchesLost;
+        this.littlePointsScored = littlePointsScored;
+        this.littlePointsLost = littlePointsLost;
         this.team = team;
-        this.league = league;
-        this.season = season;
+        this.leagueGroup = leagueGroup;
     }
 }

@@ -26,12 +26,7 @@ public class Season implements Serializable {
 
     @OneToMany(mappedBy = "season", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Game> gameList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "season", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<TeamInfo> teamInfoList = new ArrayList<>();
-
+    private List<LeagueInfo> leagueInfoList = new ArrayList<>();
 
     public Season(String name) {
         this.name = name;

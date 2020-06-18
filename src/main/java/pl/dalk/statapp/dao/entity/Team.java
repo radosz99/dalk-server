@@ -25,11 +25,6 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<TeamDetail> gamesList = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<TeamInfo> teamInfoList = new ArrayList<>();
 
 

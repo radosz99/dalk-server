@@ -22,10 +22,11 @@ public class TeamDetail {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "team_id")
-    private Team team;
-    public TeamDetail(Team team) {
-        this.team = team;
+    @JoinColumn(name = "team_info_id")
+    private TeamInfo teamInfo;
+
+    public TeamDetail(TeamInfo teamInfo) {
+        this.teamInfo = teamInfo;
     }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "homeTeamDetail", orphanRemoval = true, cascade = CascadeType.ALL)

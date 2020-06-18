@@ -32,23 +32,18 @@ public class Game implements Serializable {
     @JoinColumn(name = "referees_cast_id")
     private RefereesCast refereesCast;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "season_id")
-    private Season season;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "league_id")
-    private League league;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "league_group_id")
+    private LeagueGroup leagueGroup;
 
 
     private Date date;
 
-    public Game(TeamDetail homeTeamDetail, TeamDetail awayTeamDetail, RefereesCast refereesCast, Season season, League league, Date date) {
+    public Game(TeamDetail homeTeamDetail, TeamDetail awayTeamDetail, RefereesCast refereesCast, LeagueGroup leagueGroup, Date date) {
         this.homeTeamDetail = homeTeamDetail;
         this.awayTeamDetail = awayTeamDetail;
         this.refereesCast = refereesCast;
-        this.season = season;
-        this.league = league;
+        this.leagueGroup = leagueGroup;
         this.date = date;
     }
 }

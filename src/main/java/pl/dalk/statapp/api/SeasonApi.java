@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.dalk.statapp.dao.entity.PlayerInGame;
-import pl.dalk.statapp.dao.entity.PlayerSeasonInfo;
-import pl.dalk.statapp.dao.entity.Season;
+import pl.dalk.statapp.dao.entity.*;
+import pl.dalk.statapp.manager.LeagueGroupManager;
 import pl.dalk.statapp.manager.PlayerSeasonInfoManager;
 import pl.dalk.statapp.manager.SeasonManager;
 import pl.dalk.statapp.statistic.Calculator;
@@ -25,11 +24,13 @@ public class SeasonApi {
 
     private SeasonManager seasonManager;
     private PlayerSeasonInfoManager playerSeasonInfoManager;
+    private LeagueGroupManager leagueGroupManager;
 
     @Autowired
-    public SeasonApi(SeasonManager seasonManager, PlayerSeasonInfoManager playerSeasonInfoManager) {
+    public SeasonApi(SeasonManager seasonManager, PlayerSeasonInfoManager playerSeasonInfoManager,LeagueGroupManager leagueGroupManager) {
         this.seasonManager = seasonManager;
         this.playerSeasonInfoManager = playerSeasonInfoManager;
+        this.leagueGroupManager = leagueGroupManager;
     }
 
     @GetMapping()
@@ -57,7 +58,7 @@ public class SeasonApi {
     }
 
 
-    @GetMapping(value = "/{seasonId}/statistics/{leagueId}", produces = "application/json")
+    @GetMapping(value = "/statistics/{seasonId}/{leagueId}", produces = "application/json")
     //returns all players with game elements in the season from given league
     public String getStatistics(@PathVariable long leagueId, @PathVariable long seasonId,
                                 @RequestParam(name = "avg", required = false) boolean avg,
@@ -72,7 +73,6 @@ public class SeasonApi {
                                 @RequestParam(name = "free_throws", required = false) boolean freeThrows
     ){
 
-        long start = System.nanoTime();
         JSONObject allStatistics = new JSONObject();
         List<PlayerSeasonInfo> playerInfoList = playerSeasonInfoManager.findAll();
 
@@ -85,9 +85,11 @@ public class SeasonApi {
 
         int playersCounter = 0;
         for(PlayerSeasonInfo playerSeasonInfo : playerInfoList) {
-            if(playerSeasonInfo.getTeamInfo().getSeason().getId()!=seasonId || playerSeasonInfo.getTeamInfo().getLeague().getId()!=leagueId){
+            if(playerSeasonInfo.getTeamInfo().getLeagueGroup().getSeason().getId()!=seasonId || playerSeasonInfo.getTeamInfo().getLeagueGroup().getLeagueInfo().getLeague().getId()!=leagueId){
                 continue;
             }
+
+
 
             playersCounter++;
             JSONObject statistics;
@@ -99,6 +101,50 @@ public class SeasonApi {
                 .put("players_amount", playersCounter)
                 .put("status", "200")
                 .put("result", allStatistics)
+                .toString();
+
+        return response;
+    }
+
+
+    @GetMapping(value = "/table/{seasonId}", produces = "application/json")
+    //returns all players with game elements in the season from given league
+    public String getTable(@PathVariable long seasonId){
+        JSONObject allTables = new JSONObject();
+                Optional<Season> season = seasonManager.findById(seasonId);
+
+        List<LeagueInfo> leagueInfoList = season.get().getLeagueInfoList();
+
+
+        List<JSONObject> leaguesList = new ArrayList<>();
+        for(LeagueInfo leagueInfo : leagueInfoList){
+            JSONObject league = new JSONObject();
+            league.put("name", leagueInfo.getLeague().getName());
+            List<JSONObject> groupsList = new ArrayList<>();
+            for(LeagueGroup leagueGroup : leagueInfo.getLeagueGroupList()){
+                JSONObject group = new JSONObject();
+                group.put("name", leagueGroup.getName());
+                List<JSONObject> teamsList = new ArrayList<>();
+                for(TeamInfo teamInfo : leagueGroup.getTeamInfoList()){
+                    JSONObject team = new JSONObject();
+                    team.put("name", teamInfo.getTeam().getName());
+                    team.put("points", teamInfo.getPoints());
+                    team.put("matchesPlayed", teamInfo.getMatchesPlayed());
+                    team.put("matchesLost", teamInfo.getMatchesLost());
+                    team.put("matchesWon", teamInfo.getMatchesWon());
+                    team.put("littlePointsLost", teamInfo.getLittlePointsLost());
+                    team.put("littlePointsScored", teamInfo.getLittlePointsScored());
+                    teamsList.add(team);
+                }
+                group.put("teams", teamsList);
+                groupsList.add(group);
+            }
+            league.put("groups", groupsList);
+            leaguesList.add(league);
+        }
+        String response = new JSONObject()
+                .put("status", "200")
+                .put("result", leaguesList)
                 .toString();
 
         return response;

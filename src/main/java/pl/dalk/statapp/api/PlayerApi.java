@@ -58,7 +58,7 @@ public class PlayerApi {
 
         for(PlayerSeasonInfo playerSeasonInfo : playerInfoList) {
             JSONObject statistics = Calculator.makeStatistics(points,assists,blocks,steals,turnovers,freeThrows,rebounds,twoPoints,threePoints,playerSeasonInfo,average);
-            allStatistics.put(String.valueOf(playerSeasonInfo.getTeamInfo().getSeason().getId()), statistics);
+            allStatistics.put(String.valueOf(playerSeasonInfo.getTeamInfo().getLeagueGroup().getSeason().getId()), statistics);
         }
 
         String response = new JSONObject()
@@ -94,7 +94,7 @@ public class PlayerApi {
         }
 
         for(PlayerSeasonInfo playerSeasonInfo : playerInfoList) {
-            if(playerSeasonInfo.getTeamInfo().getSeason().getId()!=seasonId){
+            if(playerSeasonInfo.getTeamInfo().getLeagueGroup().getSeason().getId()!=seasonId){
                 continue;
             }
             statistics = Calculator.makeStatistics(points,assists,blocks,steals,turnovers,freeThrows,rebounds,twoPoints,threePoints,playerSeasonInfo,average);

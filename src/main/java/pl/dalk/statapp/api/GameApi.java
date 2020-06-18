@@ -59,7 +59,7 @@ public class GameApi {
 
             JSONObject homeTeamInfo = new JSONObject();
             TeamDetail teamDetail = game.get().getHomeTeamDetail();
-            homeTeamInfo.put("name", teamDetail.getTeam().getName());
+            homeTeamInfo.put("name", teamDetail.getTeamInfo().getTeam().getName());
             homeTeamInfo.put("statistics", teamDetail.getTeamStatisticLine().getJSON());
             List<PlayerInGame> playerInGameList = teamDetail.getPlayerInGameList();
             List<JSONObject> playerStatisticLineList = new ArrayList<>();
@@ -74,7 +74,7 @@ public class GameApi {
             homeTeamInfo.put("players", playerStatisticLineList);
 
             JSONObject awayTeamInfo = new JSONObject();
-            awayTeamInfo.put("name", game.get().getAwayTeamDetail().getTeam().getName());
+            awayTeamInfo.put("name", game.get().getAwayTeamDetail().getTeamInfo().getTeam().getName());
             awayTeamInfo.put("statistics", game.get().getAwayTeamDetail().getTeamStatisticLine().getJSON());
             playerInGameList = game.get().getAwayTeamDetail().getPlayerInGameList();
             playerStatisticLineList = new ArrayList<>();
@@ -106,44 +106,44 @@ public class GameApi {
         return response;
     }
 
-    @PostMapping()
-    public Game addGame(@RequestBody GameSimple game){
-        Optional<Team> homeTeam = teamManager.findById(game.getHome_team_id());
-        Optional<Team> awayTeam = teamManager.findById(game.getAway_team_id());
-        Optional<RefereesCast> refereesCast = refereesCastManager.findById(game.getReferees_cast_id());
-        Optional<Season> season = seasonManager.findById(game.getSeason_id());
-        Optional<League> league = leagueManager.findById(game.getLeague_id());
-        if(!homeTeam.isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That home team doesn't exist!"
-            );
-        }
-        if(!awayTeam.isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That away team doesn't exist!"
-            );
-        }
-        if(!refereesCast.isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That referees cast doesn't exist!"
-            );
-        }
-        if(!season.isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That season doesn't exist!"
-            );
-        }
-        if(!league.isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "That league doesn't exist!"
-            );
-        }
-        TeamDetail homeSquad = new TeamDetail(homeTeam.get());
-        TeamDetail awaySquad = new TeamDetail(awayTeam.get());
-        Game newGame = new Game(homeSquad, awaySquad, refereesCast.get(), season.get(), league.get(), game.getDate());
-        Game addedGame = gameManager.save(newGame);
-        return addedGame;
-    }
+//    @PostMapping()
+//    public Game addGame(@RequestBody GameSimple game){
+//        Optional<Team> homeTeam = teamManager.findById(game.getHome_team_id());
+//        Optional<Team> awayTeam = teamManager.findById(game.getAway_team_id());
+//        Optional<RefereesCast> refereesCast = refereesCastManager.findById(game.getReferees_cast_id());
+//        Optional<Season> season = seasonManager.findById(game.getSeason_id());
+//        Optional<League> league = leagueManager.findById(game.getLeague_id());
+//        if(!homeTeam.isPresent()){
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, "That home team doesn't exist!"
+//            );
+//        }
+//        if(!awayTeam.isPresent()){
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, "That away team doesn't exist!"
+//            );
+//        }
+//        if(!refereesCast.isPresent()){
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, "That referees cast doesn't exist!"
+//            );
+//        }
+//        if(!season.isPresent()){
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, "That season doesn't exist!"
+//            );
+//        }
+//        if(!league.isPresent()){
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, "That league doesn't exist!"
+//            );
+//        }
+//        TeamDetail homeSquad = new TeamDetail(homeTeam.get());
+//        TeamDetail awaySquad = new TeamDetail(awayTeam.get());
+//        Game newGame = new Game(homeSquad, awaySquad, refereesCast.get(), season.get(), league.get(), game.getDate());
+//        Game addedGame = gameManager.save(newGame);
+//        return addedGame;
+//    }
 
     @GetMapping("/{gameId}")
     public Optional<Game> getById(@PathVariable Long gameId){
