@@ -1,14 +1,13 @@
 package pl.dalk.statapp.api;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.dalk.statapp.dao.entity.Game;
-import pl.dalk.statapp.dao.entity.PlayerInGame;
-import pl.dalk.statapp.dao.entity.PlayerSeasonInfo;
-import pl.dalk.statapp.dao.entity.PlayerStatisticLine;
+import pl.dalk.statapp.dao.entity.*;
+import pl.dalk.statapp.manager.MVPManager;
 import pl.dalk.statapp.manager.PlayerSeasonInfoManager;
 import pl.dalk.statapp.statistic.Calculator;
 
@@ -22,15 +21,40 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/player")
 public class PlayerApi {
     private PlayerSeasonInfoManager playerSeasonInfoManager;
+    private MVPManager mvpManager;
 
     @Autowired
-    public PlayerApi(PlayerSeasonInfoManager playerInfoManager) {
+    public PlayerApi(PlayerSeasonInfoManager playerInfoManager, MVPManager mvpManager) {
         this.playerSeasonInfoManager = playerInfoManager;
+        this.mvpManager = mvpManager;
     }
 
     @GetMapping()
     public List<PlayerSeasonInfo> getAll(){
         return playerSeasonInfoManager.findAll();
+    }
+
+    @GetMapping(value = "/mvp", produces =  "application/json")
+    public String getCurrentMVP(){
+
+        MVP mvp = mvpManager.findByActive();
+
+        JSONObject mvpInfo = new JSONObject();
+        mvpInfo.put("name", mvp.getPlayerSeasonInfo().getPlayer().getPerson().getName());
+        mvpInfo.put("surname", mvp.getPlayerSeasonInfo().getPlayer().getPerson().getSurname());
+        mvpInfo.put("team", mvp.getPlayerSeasonInfo().getTeamInfo().getTeam().getName());
+        mvpInfo.put("statisticLine", mvp.getPlayerLine());
+        mvpInfo.put("weekInfo", mvp.getWeekInfo());
+        mvpInfo.put("playerImageURL", mvp.getPlayerSeasonInfo().getPlayer().getImageUrl());
+        mvpInfo.put("teamImageURL", mvp.getPlayerSeasonInfo().getTeamInfo().getTeam().getImageUrl());
+
+
+        String response = new JSONObject()
+                .put("status", "200")
+                .put("result", mvpInfo)
+                .toString();
+
+        return response;
     }
 
     @GetMapping(value = "/statistics/{playerId}", produces = "application/json")

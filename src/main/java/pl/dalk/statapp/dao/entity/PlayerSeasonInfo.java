@@ -36,6 +36,10 @@ public class PlayerSeasonInfo implements Serializable {
     @JsonIgnore
     private List<PlayerInGame> playerInGameList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "playerSeasonInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<MVP> MVPlist = new ArrayList<>();
+
     public PlayerSeasonInfo(Player player, TeamInfo teamInfo) {
         this.player = player;
         this.teamInfo = teamInfo;

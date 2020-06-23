@@ -26,6 +26,7 @@ public class Player implements Serializable {
 
     @NotNull
     private String dalkId;
+    private String imageUrl;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="person_id", referencedColumnName = "id")
@@ -34,6 +35,8 @@ public class Player implements Serializable {
     @OneToMany(mappedBy = "player", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PlayerSeasonInfo> playerInfoList = new ArrayList<>();
+
+
 
     public Player(@NotNull String dalkId,Person person) {
         this.dalkId = dalkId;
